@@ -56,6 +56,7 @@ export async function deleteJobAction(job_id) {
 
 
 export async function runJobAction(job_id) {
+  console.log("run_job:", job_id)
   try {
     const res = await fetch("/api/jobs/run-job", {
       method: "POST",
@@ -63,7 +64,7 @@ export async function runJobAction(job_id) {
       body: JSON.stringify({ job_id }),
     });
 
-    if (!res.ok) throw new Error("Failed to run job");
+    if (!res.ok) {console.log("Failed to run job", job_id)};
     await res.json();
   } catch (err) {
     console.error("runJob error:", err);

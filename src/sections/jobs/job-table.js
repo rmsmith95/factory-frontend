@@ -18,6 +18,8 @@ import { TrashIcon } from '@heroicons/react/24/solid';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Scrollbar } from 'src/components/scrollbar';
 import { DeleteJobDialog, EditJobDialog } from './table-helpers';
+import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
+
 
 export const JobsTable = ({
   jobs,
@@ -90,7 +92,7 @@ export const JobsTable = ({
                       <TrashIcon width={20} height={20} />
                     </IconButton>
                     <IconButton color="primary" onClick={() => { setEditingJob(job); setEditOpen(true); }}>
-                      <ArrowPathIcon width={20} height={20} />
+                      <PencilSquareIcon width={20} height={20} />
                     </IconButton>
                   </TableCell>
                   <TableCell>{job.id}</TableCell>
