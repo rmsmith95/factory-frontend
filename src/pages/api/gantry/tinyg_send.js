@@ -12,7 +12,8 @@ export default async function handler(req, res) {
     }
 
     // Forward the command to FastAPI
-    const response = await fetch("http://127.0.0.1:8000/gantry/tinyg_send", {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/gantry/tinyg_send`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ command }), // send the actual command

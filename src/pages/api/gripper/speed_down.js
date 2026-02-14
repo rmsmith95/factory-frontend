@@ -6,9 +6,8 @@ export default async function handler(req, res) {
 
   try {
     // Forward the command to FastAPI
-    const response = await fetch(
-      "http://127.0.0.1:8000/gripper/speed_down",
-      {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/gripper/speed_down`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ }),

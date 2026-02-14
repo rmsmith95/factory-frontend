@@ -12,7 +12,7 @@ export const Connections = ({ serverStatus }) => {
   const [machines, setMachines] = useState([
     { key: 'server', name: 'Server', method: 'network', ip: '127.0.0.1', port: 8000, com: 'COM1', baud: 115200 },
     { key: 'gantry', name: 'Gantry', method: 'serial', ip: '192.168.1.1', port: 8000, com: 'COM10', baud: 115200 },
-    { key: 'arduino', name: 'Arduino', method: 'serial', ip: '192.168.1.1', port: 8000, com: 'COM3', baud: 115200 },
+    // { key: 'arduino', name: 'Arduino', method: 'serial', ip: '192.168.1.1', port: 8000, com: 'COM3', baud: 115200 },
     { key: 'cobot280', name: 'Cobot280', method: 'network', ip: '10.163.187.60', port: 9000, com: 'COM4', baud: 115200 },
     { key: 'gripper', name: 'ESP32', method: 'network', ip: '192.168.4.1', port: 80, com: 'COM5', baud: 115200 },
   ]);

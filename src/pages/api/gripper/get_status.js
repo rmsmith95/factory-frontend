@@ -9,8 +9,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    // console.log("➡️ Forwarding to FastAPI...");
-    const response = await fetch("http://127.0.0.1:8000/gripper/get_status"); // GET by default
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/gripper/get_status`);
     const text = await response.json();  // or use response.json() if FastAPI returns JSON
     // console.log("⬅️ FastAPI returned:", text);
     res.status(200).json({ status: "ok", raw: text });

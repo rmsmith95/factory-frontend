@@ -7,7 +7,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/gantry/get_info");
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/gantry/get_info`);
     const text = await response.text(); // <- read as plain text
     // console.log("get_info response:", text);
 

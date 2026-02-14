@@ -10,7 +10,8 @@ export default async function handler(req, res) {
   job_id = job_id != null ? String(job_id) : "";
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/jobs/run_job", {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/jobs/run_job`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ job_id }),

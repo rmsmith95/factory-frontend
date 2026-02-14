@@ -24,7 +24,8 @@ export default async function handler(req, res) {
   console.log("Forwarding to gantry:", { x, y, z, a });
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/gantry/set_position", {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/gantry/set_position`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ x, y, z, a }),

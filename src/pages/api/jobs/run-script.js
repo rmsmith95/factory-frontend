@@ -8,7 +8,8 @@ export default async function handler(req, res) {
 
   const { target } = req.body;
   try {
-    const response = await fetch("http://127.0.0.1:8000/jobs/run_script", {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/jobs/run_script`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ target }),

@@ -5,11 +5,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const r = await fetch("http://127.0.0.1:8000/gripper/speed_up", {
-      method: "POST"
-    });
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/gripper/speed_up`, {method: "POST"});
 
-    const text = await r.text();   // ← never assume JSON
+    const text = await response.text();   // ← never assume JSON
 
     let data;
     try {

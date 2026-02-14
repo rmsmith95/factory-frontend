@@ -7,8 +7,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/jobs/add_job", { method: "POST" });
-
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/jobs/add_job`, { method: "POST" });
     console.log("FastAPI response status:", response.status);
     const data = await response.json();
     console.log("FastAPI response body:", data);

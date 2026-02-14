@@ -7,7 +7,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/jobs/get_jobs", {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/jobs/get_jobs`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });

@@ -9,7 +9,8 @@ export default async function handler(req, res) {
   const { locations } = req.body;
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/gantry/edit_locations", {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/gantry/edit_locations`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ locations }),

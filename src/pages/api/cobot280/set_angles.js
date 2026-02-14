@@ -12,13 +12,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const backendRes = await fetch("http://127.0.0.1:8000/cobot280/set_angles", {
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/cobot280/set_angles`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ angles, speed }),
     });
 
-    const data = await backendRes.json();
+    const data = await response.json();
     return res.status(200).json(data);
 
   } catch (err) {
