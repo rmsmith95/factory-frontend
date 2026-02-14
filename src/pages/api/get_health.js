@@ -1,26 +1,31 @@
 export default async function handler(req, res) {
-  // console.log("Received request to /api/get_health");
-
   if (req.method !== "GET") {
     return res.status(405).json({ status: "method not allowed" });
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/get_health");
-    const text = await response.text(); // <- read as plain text
-    // console.log("health:", text);
+    const backendUrl = process.env.FASTAPI_BASE_URL || "http://127.0.0.1:8000";
+    const response = await fetch(`${backendUrl}/get_health`);
 
-    // If your FastAPI endpoint already returns JSON, you could try:
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = { raw: text }; // fallback
+    // Check status before parsing JSON
+    if (!response.ok) {
+      return res.status(200).json({ status: "stopped", machines: {} });
     }
 
-    res.status(200).json(data);
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      return res.status(200).json({ status: "stopped", machines: {} });
+    }
+
+    if (!data || !data.machines || typeof data.machines !== "object") {
+      return res.status(200).json({ status: "stopped", machines: {} });
+    }
+
+    return res.status(200).json({ status: "connected", machines: data.machines });
   } catch (err) {
-    console.error("Error forwarding to FastAPI:", err);
-    res.status(500).json({ status: "error", message: err.message });
+    console.warn("Backend unreachable:", err.message);
+    return res.status(500).json({ status: "stopped", machines: {} });
   }
 }

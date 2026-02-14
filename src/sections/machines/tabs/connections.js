@@ -7,7 +7,8 @@ import CheckCircleIcon from '@heroicons/react/24/solid/CheckCircleIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 
 export const Connections = ({ serverStatus }) => {
-  // Editable machine config state
+  // Parent is ../machines-panel.js
+
   const [machines, setMachines] = useState([
     { key: 'server', name: 'Server', method: 'network', ip: '127.0.0.1', port: 8000, com: 'COM1', baud: 115200 },
     { key: 'gantry', name: 'Gantry', method: 'serial', ip: '192.168.1.1', port: 8000, com: 'COM10', baud: 115200 },
@@ -28,7 +29,21 @@ export const Connections = ({ serverStatus }) => {
   const handleConnect = async (m) => {
     setConnecting(prev => ({ ...prev, [m.key]: true }));
 
+    // Build backend URL from "server" row
+    const server = machines.find(x => x.key === 'server');
+    const backendUrl = `http://${server.ip}:${server.port}`;
+
+    // Only update if changed (and only when connecting the server row)
+    if (m.key === 'server') {
+      const prevUrl = localStorage.getItem('backendUrl');
+      if (prevUrl !== backendUrl) {
+        localStorage.setItem('backendUrl', backendUrl);
+        console.log("Updated backend URL:", backendUrl);
+      }
+    }
+
     const body = {
+      backendUrl,
       method: m.method,
       com: m.com,
       baud: m.baud,
@@ -44,13 +59,13 @@ export const Connections = ({ serverStatus }) => {
       });
       const data = await res.json();
       console.log(`${m.name} connect response:`, data);
-      // You could optionally trigger a refresh of serverStatus here
     } catch (err) {
       console.error(`Failed to connect ${m.name}:`, err);
     } finally {
       setConnecting(prev => ({ ...prev, [m.key]: false }));
     }
   };
+
 
   return (
     <Table>
@@ -66,11 +81,7 @@ export const Connections = ({ serverStatus }) => {
 
       <TableBody>
         {machines.map((m) => {
-          const connected =
-            m.key === "server"
-              ? serverStatus != null
-              : serverStatus?.machines?.[m.key] ?? false;
-
+          const connected = m.key === "server" ? serverStatus?.status === "connected" : serverStatus?.machines?.[m.key] ?? false;
           const isConnecting = connecting[m.key] || false;
 
           return (

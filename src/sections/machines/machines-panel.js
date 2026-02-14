@@ -18,6 +18,7 @@ export const MachinePanel = ({ }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const handleTabChange = (_, newValue) => setSelectedTab(newValue);
   const serverStatus = useMachineStatus(5000);
+  // console.log(serverStatus);
 
   const tabSx = {
     justifyContent: "flex-start",
